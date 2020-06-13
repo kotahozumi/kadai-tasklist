@@ -1,0 +1,60 @@
+[1mdiff --git a/app/controllers/tasks_controller.rb b/app/controllers/tasks_controller.rb[m
+[1mindex 470fdb1..8a66900 100644[m
+[1m--- a/app/controllers/tasks_controller.rb[m
+[1m+++ b/app/controllers/tasks_controller.rb[m
+[36m@@ -12,7 +12,7 @@[m [mclass TasksController < ApplicationController[m
+   end[m
+ [m
+   def create[m
+[31m-      @task = Task.new(message_params)[m
+[32m+[m[32m      @task = Task.new(task_params)[m
+ [m
+     if @task.save[m
+       flash[:success] = 'task が正常に投稿されました'[m
+[36m@@ -30,7 +30,7 @@[m [mclass TasksController < ApplicationController[m
+   def update[m
+       @task = Task.find(params[:id])[m
+ [m
+[31m-    if @task.update(message_params)[m
+[32m+[m[32m    if @task.update(task_params)[m
+       flash[:success] = 'Task は正常に更新されました'[m
+       redirect_to @task[m
+     else[m
+[36m@@ -46,4 +46,11 @@[m [mclass TasksController < ApplicationController[m
+     flash[:success] = 'Task は正常に削除されました'[m
+     redirect_to tasks_url[m
+   end[m
+[32m+[m[41m  [m
+[32m+[m[32m  private[m
+[32m+[m
+[32m+[m[32m  # Strong Parameter[m
+[32m+[m[32m  def task_params[m
+[32m+[m[32m    params.require(:task).permit(:content)[m
+[32m+[m[32m  end[m
+ end[m
+\ No newline at end of file[m
+[1mdiff --git a/app/views/tasks/edit.html.erb b/app/views/tasks/edit.html.erb[m
+[1mindex d97edbc..d4b11d1 100644[m
+[1m--- a/app/views/tasks/edit.html.erb[m
+[1m+++ b/app/views/tasks/edit.html.erb[m
+[36m@@ -7,4 +7,4 @@[m
+   <%= f.submit '投稿' %>[m
+ <% end %>[m
+ [m
+[31m-<%= link_to '一覧に戻る', messages_path %>[m
+\ No newline at end of file[m
+[32m+[m[32m<%= link_to '一覧に戻る', tasks_path %>[m
+\ No newline at end of file[m
+[1mdiff --git a/app/views/tasks/index.html.erb b/app/views/tasks/index.html.erb[m
+[1mindex 98d81a5..1a5ad31 100644[m
+[1m--- a/app/views/tasks/index.html.erb[m
+[1m+++ b/app/views/tasks/index.html.erb[m
+[36m@@ -1,7 +1,7 @@[m
+ <h1>タスク一覧</h1>[m
+ [m
+ <ul>[m
+[31m-  <% @tasks.each do |message| %>[m
+[32m+[m[32m  <% @tasks.each do |task| %>[m
+    <li><%= link_to task.id, task %> : <%= task.content %></li>[m
+   <% end %>[m
+ </ul>[m
